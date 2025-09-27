@@ -9,198 +9,55 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ExampleChatRouteImport } from './routes/example.chat'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
-import { Route as DemoStoreRouteImport } from './routes/demo.store'
-import { Route as ApiSseRouteImport } from './routes/api.sse'
-import { Route as ApiMessagesRouteImport } from './routes/api.messages'
-import { Route as ApiDemoTqTodosRouteImport } from './routes/api.demo-tq-todos'
-import { Route as ApiDemoNamesRouteImport } from './routes/api.demo-names'
-import { Route as ApiDemoChatRouteImport } from './routes/api.demo-chat'
-import { Route as ExampleGuitarsIndexRouteImport } from './routes/example.guitars/index'
-import { Route as ExampleGuitarsGuitarIdRouteImport } from './routes/example.guitars/$guitarId'
-import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
-import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ExampleChatRoute = ExampleChatRouteImport.update({
-  id: '/example/chat',
-  path: '/example/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStoreRoute = DemoStoreRouteImport.update({
-  id: '/demo/store',
-  path: '/demo/store',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiSseRoute = ApiSseRouteImport.update({
-  id: '/api/sse',
-  path: '/api/sse',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiMessagesRoute = ApiMessagesRouteImport.update({
-  id: '/api/messages',
-  path: '/api/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiDemoTqTodosRoute = ApiDemoTqTodosRouteImport.update({
-  id: '/api/demo-tq-todos',
-  path: '/api/demo-tq-todos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiDemoNamesRoute = ApiDemoNamesRouteImport.update({
-  id: '/api/demo-names',
-  path: '/api/demo-names',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiDemoChatRoute = ApiDemoChatRouteImport.update({
-  id: '/api/demo-chat',
-  path: '/api/demo-chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExampleGuitarsIndexRoute = ExampleGuitarsIndexRouteImport.update({
-  id: '/example/guitars/',
-  path: '/example/guitars/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExampleGuitarsGuitarIdRoute = ExampleGuitarsGuitarIdRouteImport.update({
-  id: '/example/guitars/$guitarId',
-  path: '/example/guitars/$guitarId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/api/demo-chat': typeof ApiDemoChatRoute
-  '/api/demo-names': typeof ApiDemoNamesRoute
-  '/api/demo-tq-todos': typeof ApiDemoTqTodosRoute
-  '/api/messages': typeof ApiMessagesRoute
-  '/api/sse': typeof ApiSseRoute
-  '/demo/store': typeof DemoStoreRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/example/chat': typeof ExampleChatRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/example/guitars': typeof ExampleGuitarsIndexRoute
+  '/login': typeof LoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api/demo-chat': typeof ApiDemoChatRoute
-  '/api/demo-names': typeof ApiDemoNamesRoute
-  '/api/demo-tq-todos': typeof ApiDemoTqTodosRoute
-  '/api/messages': typeof ApiMessagesRoute
-  '/api/sse': typeof ApiSseRoute
-  '/demo/store': typeof DemoStoreRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/example/chat': typeof ExampleChatRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/example/guitars': typeof ExampleGuitarsIndexRoute
+  '/login': typeof LoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/api/demo-chat': typeof ApiDemoChatRoute
-  '/api/demo-names': typeof ApiDemoNamesRoute
-  '/api/demo-tq-todos': typeof ApiDemoTqTodosRoute
-  '/api/messages': typeof ApiMessagesRoute
-  '/api/sse': typeof ApiSseRoute
-  '/demo/store': typeof DemoStoreRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/example/chat': typeof ExampleChatRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/example/guitars/': typeof ExampleGuitarsIndexRoute
+  '/login': typeof LoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/api/demo-chat'
-    | '/api/demo-names'
-    | '/api/demo-tq-todos'
-    | '/api/messages'
-    | '/api/sse'
-    | '/demo/store'
-    | '/demo/tanstack-query'
-    | '/example/chat'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/example/guitars/$guitarId'
-    | '/example/guitars'
+  fullPaths: '/' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/api/demo-chat'
-    | '/api/demo-names'
-    | '/api/demo-tq-todos'
-    | '/api/messages'
-    | '/api/sse'
-    | '/demo/store'
-    | '/demo/tanstack-query'
-    | '/example/chat'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/example/guitars/$guitarId'
-    | '/example/guitars'
-  id:
-    | '__root__'
-    | '/'
-    | '/api/demo-chat'
-    | '/api/demo-names'
-    | '/api/demo-tq-todos'
-    | '/api/messages'
-    | '/api/sse'
-    | '/demo/store'
-    | '/demo/tanstack-query'
-    | '/example/chat'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/example/guitars/$guitarId'
-    | '/example/guitars/'
+  to: '/' | '/login'
+  id: '__root__' | '/' | '/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ApiDemoChatRoute: typeof ApiDemoChatRoute
-  ApiDemoNamesRoute: typeof ApiDemoNamesRoute
-  ApiDemoTqTodosRoute: typeof ApiDemoTqTodosRoute
-  ApiMessagesRoute: typeof ApiMessagesRoute
-  ApiSseRoute: typeof ApiSseRoute
-  DemoStoreRoute: typeof DemoStoreRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-  ExampleChatRoute: typeof ExampleChatRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
-  ExampleGuitarsGuitarIdRoute: typeof ExampleGuitarsGuitarIdRoute
-  ExampleGuitarsIndexRoute: typeof ExampleGuitarsIndexRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -208,107 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/example/chat': {
-      id: '/example/chat'
-      path: '/example/chat'
-      fullPath: '/example/chat'
-      preLoaderRoute: typeof ExampleChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/store': {
-      id: '/demo/store'
-      path: '/demo/store'
-      fullPath: '/demo/store'
-      preLoaderRoute: typeof DemoStoreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/sse': {
-      id: '/api/sse'
-      path: '/api/sse'
-      fullPath: '/api/sse'
-      preLoaderRoute: typeof ApiSseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/messages': {
-      id: '/api/messages'
-      path: '/api/messages'
-      fullPath: '/api/messages'
-      preLoaderRoute: typeof ApiMessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/demo-tq-todos': {
-      id: '/api/demo-tq-todos'
-      path: '/api/demo-tq-todos'
-      fullPath: '/api/demo-tq-todos'
-      preLoaderRoute: typeof ApiDemoTqTodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/demo-names': {
-      id: '/api/demo-names'
-      path: '/api/demo-names'
-      fullPath: '/api/demo-names'
-      preLoaderRoute: typeof ApiDemoNamesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/demo-chat': {
-      id: '/api/demo-chat'
-      path: '/api/demo-chat'
-      fullPath: '/api/demo-chat'
-      preLoaderRoute: typeof ApiDemoChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/example/guitars/': {
-      id: '/example/guitars/'
-      path: '/example/guitars'
-      fullPath: '/example/guitars'
-      preLoaderRoute: typeof ExampleGuitarsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/example/guitars/$guitarId': {
-      id: '/example/guitars/$guitarId'
-      path: '/example/guitars/$guitarId'
-      fullPath: '/example/guitars/$guitarId'
-      preLoaderRoute: typeof ExampleGuitarsGuitarIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ApiDemoChatRoute: ApiDemoChatRoute,
-  ApiDemoNamesRoute: ApiDemoNamesRoute,
-  ApiDemoTqTodosRoute: ApiDemoTqTodosRoute,
-  ApiMessagesRoute: ApiMessagesRoute,
-  ApiSseRoute: ApiSseRoute,
-  DemoStoreRoute: DemoStoreRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-  ExampleChatRoute: ExampleChatRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
-  ExampleGuitarsGuitarIdRoute: ExampleGuitarsGuitarIdRoute,
-  ExampleGuitarsIndexRoute: ExampleGuitarsIndexRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
