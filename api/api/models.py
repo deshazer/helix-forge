@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from custom_user.models import User
 from django.db import models
 
 
