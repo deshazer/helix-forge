@@ -22,6 +22,7 @@
     "noEmit": true,
     /* Linting */
     "skipLibCheck": true,
+    "checkJs": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

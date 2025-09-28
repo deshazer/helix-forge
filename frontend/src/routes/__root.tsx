@@ -2,70 +2,58 @@ import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import { TanstackDevtools } from "@tanstack/react-devtools";
+} from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanstackDevtools } from '@tanstack/react-devtools'
 
-import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
-import appCss from "../styles.css?url";
+import appCss from '../styles.css?url'
 
-import type { QueryClient } from "@tanstack/react-query";
+import type { QueryClient } from '@tanstack/react-query'
+import { Toaster } from 'sonner'
 
 interface MyRouterContext {
-  queryClient: QueryClient;
+  queryClient: QueryClient
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  defaultNotFoundComponent: () => <>404 Not Found</>,
-  defaultPendingComponent: () => <>Loading...</>,
   head: () => ({
     meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "Helix Forge",
-      },
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Helix Forge' },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: 'stylesheet', href: appCss },
+      { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
 
   shellComponent: RootDocument,
-});
+})
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark font-sans">
       <head>
         <HeadContent />
       </head>
       <body>
         {children}
+        <Toaster />
         <TanstackDevtools
-          config={{
-            position: "bottom-left",
-          }}
+          config={{ position: 'bottom-left' }}
           plugins={[
             {
-              name: "Tanstack Router",
+              name: 'Tanstack Router',
               render: <TanStackRouterDevtoolsPanel />,
             },
             TanStackQueryDevtools,
-            StoreDevtools,
           ]}
         />
         <Scripts />
       </body>
     </html>
-  );
+  )
 }

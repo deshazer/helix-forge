@@ -1,22 +1,27 @@
-import { defineConfig } from "vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
-import viteTsConfigPaths from "vite-tsconfig-paths";
-import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import { defineConfig } from 'vite'
+import viteReact from '@vitejs/plugin-react'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
+import { fileURLToPath } from 'url'
 
 const config = defineConfig({
   plugins: [
     // this is the plugin that enables path aliases
-    viteTsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
+    viteTsConfigPaths({ projects: ['./tsconfig.json'] }),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart({ spa: { enabled: true } }),
     viteReact(),
   ],
-  server: {
-    host: "0.0.0.0",
+  resolve: {
+    alias: [
+      {
+        find: '@/',
+        replacement: fileURLToPath(new URL('./src/', import.meta.url)),
+      },
+    ],
   },
-});
+  server: { host: '0.0.0.0' },
+})
 
-export default config;
+export default config
