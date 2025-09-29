@@ -31,6 +31,16 @@ SECRET_KEY = "django-insecure-7i(xlde$k0#i51a-oqs_1@t-m=ow=324=nb=-+fp=fqw5kyyw)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+SCHWAB_API_KEY = os.getenv("SCHWAB_API_KEY")
+SCHWAB_APP_SECRET = os.getenv("SCHWAB_APP_SECRET")
+SCHWAB_CALLBACK_URL = os.getenv("SCHWAB_CALLBACK_URL")
+SCHWAB_TOKEN_PATH = os.getenv("SCHWAB_TOKEN_PATH")
+SCHWAB_API_URL = os.getenv("SCHWAB_API_URL")
+SCHWAB_ACCOUNT_HASH = os.getenv("SCHWAB_ACCOUNT_HASH")
+FIELD_ENCRYPTION_KEY = os.getenv("FIELD_ENCRYPTION_KEY")
+
+
 ALLOWED_HOSTS = []
 
 
@@ -49,8 +59,10 @@ INSTALLED_APPS = [
     "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
     "custom_user.apps.CustomUserConfig",
     "django_extensions",
+    "sslserver",
     "api",
     "account",
+    "schwab_token",
 ]
 
 AUTH_USER_MODEL = "custom_user.User"
@@ -58,6 +70,10 @@ AUTH_USER_MODEL = "custom_user.User"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://localhost:5173",
+    "https://127.0.0.1:5173",
+    "https://dj.localhost",
+    "http://dj.localhost",
 ]
 
 SIMPLE_JWT = {
