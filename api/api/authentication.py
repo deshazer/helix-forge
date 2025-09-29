@@ -1,7 +1,5 @@
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .models import User
-
 
 class CookiesJWTAuthentication(JWTAuthentication):
     def authenticate(self, request):

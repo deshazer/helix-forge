@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import include, path
 
 from .views import (
     CustomRefreshTokenView,
     CustomTokenObtainPairView,
+    get_auth_user,
     get_notes,
     is_authenticated,
     logout,
@@ -16,4 +17,6 @@ urlpatterns = [
     path("logout/", logout, name="logout"),
     path("authenticated/", is_authenticated, name="is_authenticated"),
     path("register/", register, name="register"),
+    path("whoami/", get_auth_user, name="whoami"),
+    path("", include("account.urls"), name="accounts"),
 ]

@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
     "custom_user.apps.CustomUserConfig",
+    "django_extensions",
     "api",
+    "account",
 ]
 
 AUTH_USER_MODEL = "custom_user.User"
