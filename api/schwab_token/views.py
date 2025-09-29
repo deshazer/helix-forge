@@ -47,7 +47,6 @@ class SchwabCallbackView(APIView):
     def get(self, request):
         """Handle Schwab OAuth callback"""
         try:
-            # print(request.__dict__, file=sys.stderr)
             auth_code = request.GET.get("code")
 
             if not auth_code:
@@ -72,7 +71,6 @@ class SchwabCallbackView(APIView):
             )
 
             token_info = res.json()
-            print(json.dumps(token_info, indent=2))
 
             token_info["refresh_token_expires_at"] = (
                 timezone.now() + datetime.timedelta(days=7)
