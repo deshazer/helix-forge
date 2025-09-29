@@ -54,6 +54,7 @@ def import_accounts(request):
                 defaults={
                     "name": f"{acct_pref["nickName"]}{acct_pref['displayAcctId']}",
                     "type": acct_pref["type"],
+                    "is_default": acct_pref["primaryAccount"],
                 },
             )
 

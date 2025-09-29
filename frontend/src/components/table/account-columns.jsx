@@ -1,17 +1,8 @@
+import { Check } from 'lucide-react'
 import { Badge } from '../ui/badge'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import Txt from '../ui/typography'
 import { DataTableColumnHeader } from './DataTableColumnHeader'
 
 export const accountColumns = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
-    ),
-    enableSorting: true,
-    cell: ({ row }) => <span>{row.original.id}</span>,
-  },
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -29,5 +20,13 @@ export const accountColumns = [
     ),
     enableSorting: true,
     cell: ({ row }) => <Badge>{row.original.type}</Badge>,
+  },
+  {
+    accessorKey: 'is_default',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Primary" />
+    ),
+    enableSorting: true,
+    cell: ({ row }) => <>{row.original.is_default ? <Check /> : null}</>,
   },
 ]

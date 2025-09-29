@@ -9,6 +9,7 @@ import { getErrorMessage } from '@/lib/utils'
 import { createFileRoute } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { accountColumns } from '@/components/table/account-columns'
+import dayjs from 'dayjs'
 
 export const Route = createFileRoute('/_authenticated/accounts')({
   component: AccountsComponent,
@@ -18,6 +19,8 @@ function AccountsComponent() {
   const { data: accounts } = useAccounts()
   const { mutateAsync: importAccounts, isPending: isImportingAccounts } =
     useImportSchwabAccountsMutation()
+
+  const lastImported = dayjs(accounts[0]?.updated_at)
 
   const importSchwabAccounts = async () => {
     try {
@@ -41,9 +44,17 @@ function AccountsComponent() {
       <div className="flex items-center justify-between">
         <Txt.h3>Accounts</Txt.h3>
         <Button onClick={importSchwabAccounts} disabled={isImportingAccounts}>
-          Import Schwab Accounts
+          Sync Schwab Accounts
         </Button>
       </div>
+      <Txt.muted>
+        To make changes, update your Schwab account then re-sync.
+      </Txt.muted>
+      {lastImported.isValid() && (
+        <Txt.muted>
+          Last sync: {lastImported.format('MMM D [@] h:mm A')}
+        </Txt.muted>
+      )}
       <DataTable columns={accountColumns} data={accounts} />
     </div>
   )
