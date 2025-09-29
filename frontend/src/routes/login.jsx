@@ -12,10 +12,18 @@ import {
   CardHeader,
   CardTitle,
 } from '../components/ui/card'
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/login')({ component: LoginComponent })
 
 function LoginComponent() {
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    queryClient.clear()
+  }, [])
+
   const { mutateAsync: login } = useLoginMutation()
   const form = useAppForm({
     defaultValues: { email: '', password: '' },
