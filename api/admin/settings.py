@@ -25,11 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-7i(xlde$k0#i51a-oqs_1@t-m=ow=324=nb=-+fp=fqw5kyyw)"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("APP_DEBUG") == "True"
 
 
 SCHWAB_API_KEY = os.getenv("SCHWAB_API_KEY")
@@ -59,7 +57,6 @@ INSTALLED_APPS = [
     "django_use_email_as_username.apps.DjangoUseEmailAsUsernameConfig",
     "custom_user.apps.CustomUserConfig",
     "django_extensions",
-    "sslserver",
     "api",
     "account",
     "schwab_token",

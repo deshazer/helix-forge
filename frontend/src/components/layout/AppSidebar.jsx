@@ -11,8 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '../ui/sidebar'
-import { Cog, Home, LogOut } from 'lucide-react'
+import { Cog, DollarSign, Home, LogOut, PiggyBank } from 'lucide-react'
 import { useAuthState, useLogoutMutation } from '@/lib/auth/auth.query'
+import LogoIcon from '../logo/LogoIcon'
 
 const AppSidebar = () => {
   const { mutateAsync: logout } = useLogoutMutation()
@@ -22,15 +23,18 @@ const AppSidebar = () => {
     .join(' ')
     .trim()
   return (
-    <Sidebar collapsible="icon" variant="inset">
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <Link to="/home">
-              <Logo className="max-w-[calc(var(--sidebar-width)-3rem)]" />
+              <Logo className="max-w-[calc(var(--sidebar-width)-3rem)] group-data-[state=collapsed]:hidden" />
+              <LogoIcon className="w-8 group-data-[state=expanded]:hidden" />
             </Link>
           </SidebarMenuItem>
-          <SidebarMenuItem>👋 {name}</SidebarMenuItem>
+          <SidebarMenuItem className="group-data-[state=collapsed]:hidden">
+            👋 {name}
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
@@ -41,6 +45,20 @@ const AppSidebar = () => {
                 <SidebarMenuButton asChild>
                   <Link to="/home">
                     <Home /> Home
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/transactions">
+                    <DollarSign /> Transactions
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/accounts">
+                    <PiggyBank /> Accounts
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

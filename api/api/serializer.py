@@ -35,7 +35,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class GetUserSerializer(serializers.ModelSerializer):
+    has_schwab_token = serializers.SerializerMethodField()
+    refresh_token_expires_at = serializers.SerializerMethodField()
+
     class Meta:
+        model = get_user_model()
         fields = (
             "id",
             "email",
@@ -45,10 +49,21 @@ class GetUserSerializer(serializers.ModelSerializer):
             "is_staff",
             "date_joined",
             "is_active",
+            "has_schwab_token",
+            "refresh_token_expires_at",
         )
         read_only_fields = (
             "id",
             "is_superuser",
             "is_staff",
+            "has_schwab_token",
+            "refresh_token_expires_at",
         )
-        model = get_user_model()
+
+    def get_has_schwab_token(self, obj):
+        return bool(obj.schwab_token)
+
+    def get_refresh_token_expires_at(self, obj):
+        if hasattr(obj, "schwab_token") and obj.schwab_token:
+            return obj.schwab_token.refresh_token_expires_at
+        return None

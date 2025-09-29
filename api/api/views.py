@@ -73,7 +73,7 @@ class CustomRefreshTokenView(TokenRefreshView):
                 return response
 
         except Exception as e:
-            return Response({"success": False, "error": str(e)}, status=400)
+            return Response({"success": False, "error": str(e)}, status=401)
 
 
 @api_view(["POST"])

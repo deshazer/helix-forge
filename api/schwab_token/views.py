@@ -27,8 +27,6 @@ class SchwabAuthInitView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
-        print("SchwabAuthInitView")
-
         # Schwab OAuth parameters
         params = {
             "response_type": "code",
@@ -94,8 +92,8 @@ class SchwabCallbackView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SchwabClientView(APIView):
-    """View to get a Schwab client for making API calls"""
+class SchwabAccountsView(APIView):
+    """View to get a list of Schwab accounts"""
 
     @permission_classes([IsAuthenticated])
     def get(self, request):
@@ -111,7 +109,40 @@ class SchwabClientView(APIView):
             # Test the connection
             account_info = client.get_account_numbers()
 
+            if account_info.status_code == 401:
+                return Response(
+                    {"message": "You need to re-authenticate "},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
             return Response({"success": True, "account_info": account_info.json()})
+
+        except SchwabToken.DoesNotExist:
+            return Response(
+                {"error": "Schwab account not connected"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SchwabTransactionsView(APIView):
+    """View to get a list of Schwab transactions"""
+
+    @permission_classes([IsAuthenticated])
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return Response(
+                {"error": "Authentication required"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        try:
+            client = create_schwab_client(request.user)
+
+            transactions = client.get_transactions(settings.SCHWAB_ACCOUNT_HASH)
+
+            return Response({"success": True, "transactions": transactions.json()})
 
         except SchwabToken.DoesNotExist:
             return Response(

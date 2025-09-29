@@ -107,10 +107,7 @@ Txt.large = ({ children, className = '', ...props }) => (
 )
 
 Txt.small = ({ children, className = '', ...props }) => (
-  <small
-    className={cn('text-sm font-medium leading-none', className)}
-    {...props}
-  >
+  <small className={cn('text-sm font-medium leading-6', className)} {...props}>
     {children}
   </small>
 )
