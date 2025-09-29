@@ -25,12 +25,12 @@ const AppSidebar = () => {
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem asChild>
+          <SidebarMenuItem>
             <Link to="/home">
               <Logo className="max-w-[calc(var(--sidebar-width)-3rem)]" />
             </Link>
           </SidebarMenuItem>
-          <SidebarMenuItem asChild>{name}</SidebarMenuItem>
+          <SidebarMenuItem>👋 {name}</SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
