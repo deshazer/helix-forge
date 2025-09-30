@@ -1,10 +1,11 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import RelativeDate from '@/components/ui/hover-date'
 import Txt from '@/components/ui/typography'
 import { authQueries, useAuthState } from '@/lib/auth/auth.query'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { AlertCircleIcon, ChartSpline, Cog, ShieldCheck } from 'lucide-react'
+import { AlertCircleIcon, ChartSpline, ShieldCheck } from 'lucide-react'
 
 dayjs.extend(relativeTime)
 
@@ -81,8 +82,7 @@ function ValidTokenAlert({ expirationDate }) {
         <div className="flex flex-col gap-y-4">
           <div>✅ Your Schwab account is connected.</div>
           <div>
-            🕛 Your token will expire in {expirationDate.fromNow()} on{': '}
-            {expirationDate.format('ddd, MMM D [@] h:mm A')}
+            🕛 Your token will expire <RelativeDate date={expirationDate} />
           </div>
           <div>
             <Txt.p>

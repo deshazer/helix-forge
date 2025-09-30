@@ -1,3 +1,4 @@
+from django.utils.timezone import timezone
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -61,6 +62,8 @@ def import_accounts(request):
             if created:
                 imported += 1
 
+            request.user.account_sync_at = timezone.now()
+            request.user.save()
         return Response({"success": True, "imported": imported})
 
     except Exception as e:

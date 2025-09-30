@@ -1,6 +1,7 @@
 import json
 
 from account.models import Account
+from django.utils import timezone
 from glom import glom
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
@@ -117,6 +118,8 @@ def import_transactions(request):
             if created:
                 num_created += 1
 
+            request.user.transaction_sync_at = timezone.now()
+            request.user.save()
         return Response(
             {"success": True, "transactions": transactions, "imported": num_created}
         )

@@ -1,5 +1,15 @@
+import { useAuthState, useLogoutMutation } from '@/lib/auth/auth.query'
 import { Link } from '@tanstack/react-router'
+import {
+  ChartNoAxesCombined,
+  Cog,
+  DollarSign,
+  Home,
+  Landmark,
+  LogOut,
+} from 'lucide-react'
 import Logo from '../logo/Logo'
+import LogoIcon from '../logo/LogoIcon'
 import {
   Sidebar,
   SidebarContent,
@@ -11,9 +21,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '../ui/sidebar'
-import { Cog, DollarSign, Home, LogOut, PiggyBank } from 'lucide-react'
-import { useAuthState, useLogoutMutation } from '@/lib/auth/auth.query'
-import LogoIcon from '../logo/LogoIcon'
 
 const AppSidebar = () => {
   const { mutateAsync: logout } = useLogoutMutation()
@@ -58,7 +65,14 @@ const AppSidebar = () => {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/accounts">
-                    <PiggyBank /> Accounts
+                    <Landmark /> Accounts
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/reports">
+                    <ChartNoAxesCombined /> Reports
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

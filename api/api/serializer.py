@@ -43,6 +43,8 @@ class GetUserSerializer(serializers.ModelSerializer):
             "is_active",
             "has_schwab_token",
             "refresh_token_expires_at",
+            "account_sync_at",
+            "transaction_sync_at",
         )
         read_only_fields = (
             "id",
