@@ -3,8 +3,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .models import Note
-from .serializer import GetUserSerializer, NoteSerializer, UserRegistrationSerializer
+from .serializer import GetUserSerializer, UserRegistrationSerializer
 
 
 # Create your views here.
@@ -102,16 +101,6 @@ def register(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
-
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def get_notes(request):
-    user = request.user
-    notes = Note.objects.filter(owner=user)
-    serializer = NoteSerializer(notes, many=True)
-
-    return Response(serializer.data)
 
 
 @api_view(["GET"])

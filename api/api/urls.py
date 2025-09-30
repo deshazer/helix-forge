@@ -4,7 +4,6 @@ from .views import (
     CustomRefreshTokenView,
     CustomTokenObtainPairView,
     get_auth_user,
-    get_notes,
     is_authenticated,
     logout,
     register,
@@ -13,7 +12,6 @@ from .views import (
 urlpatterns = [
     path("token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", CustomRefreshTokenView.as_view(), name="token_refresh"),
-    path("notes/", get_notes, name="get_notes"),
     path("logout/", logout, name="logout"),
     path("authenticated/", is_authenticated, name="is_authenticated"),
     path("register/", register, name="register"),

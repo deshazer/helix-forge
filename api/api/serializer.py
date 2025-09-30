@@ -2,14 +2,6 @@ from custom_user.models import User
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Note
-
-
-class NoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Note
-        fields = ("id", "title", "content", "owner", "created_at", "updated_at")
-
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
