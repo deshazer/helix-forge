@@ -6,11 +6,15 @@ export const accountColumns = [
   {
     accessorKey: 'name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader
+        column={column}
+        title="Name"
+        className="justify-start"
+      />
     ),
     enableSorting: true,
     cell: function CellComponent({ row }) {
-      return <div>{row.original.name}</div>
+      return <div className="text-left">{row.original.name}</div>
     },
   },
   {
@@ -27,6 +31,10 @@ export const accountColumns = [
       <DataTableColumnHeader column={column} title="Primary" />
     ),
     enableSorting: true,
-    cell: ({ row }) => <>{row.original.is_default ? <Check /> : null}</>,
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        {row.original.is_default ? <Check /> : null}
+      </div>
+    ),
   },
 ]
