@@ -67,8 +67,6 @@ def import_transactions(request):
         num_created = 0
         for transaction in transactions:
 
-            print(json.dumps(transaction, indent=4))
-
             transfer_items = glom(transaction, "transferItems", default=[])
             final_item = transfer_items[-1] or {}
             final_instrument = final_item.get("instrument", {})
