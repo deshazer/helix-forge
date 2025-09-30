@@ -1,38 +1,85 @@
+import DataTable from '@/components/table/DataTable'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
 import Txt from '@/components/ui/typography'
-import { schwabQueries, useSchwabTransactions } from '@/lib/schwab/schwab.query'
+import { accountQueries, useAccounts } from '@/lib/accounts/accounts.query'
+import {
+  transactionQueries,
+  useImportSchwabTransactionsMutation,
+  useTransactions,
+} from '@/lib/transactions/transactions.query'
+import { getErrorMessage } from '@/lib/utils'
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import { transactionColumns } from '@/components/table/transaction-columns'
 
 export const Route = createFileRoute('/_authenticated/transactions')({
   loader: async ({ context }) => {
-    context.queryClient.ensureQueryData(schwabQueries.transactions())
+    context.queryClient.ensureQueryData(transactionQueries.index())
+    context.queryClient.ensureQueryData(accountQueries.index())
   },
   component: TransactionsComponent,
 })
 
 function TransactionsComponent() {
-  const { data: response } = useSchwabTransactions()
+  const { data: transactions } = useTransactions()
+  const { data: accounts } = useAccounts()
 
-  const transactions = response.transactions
-    .filter((t) => t.type === 'TRADE')
-    .filter((t) =>
-      t.transferItems.some((i) => i.instrument.assetType === 'OPTION'),
-    )
-    .toSorted((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
-    .map(({ transferItems, ...t }) => ({
-      ...t,
+  const [accountId, setAccountId] = useState('')
 
-      totalFees: transferItems.reduce(
-        (acc, i) =>
-          i.instrument.assetType === 'CURRENCY' ? acc + i.amount : acc,
-        0,
-      ),
-      transferItems,
-    }))
+  const { mutateAsync: importSchwabTransactions, isPending: isImporting } =
+    useImportSchwabTransactionsMutation()
+
+  const importTransactions = async () => {
+    try {
+      if (!accountId) {
+        return toast.error('Please select an account')
+      }
+      const { imported } = await importSchwabTransactions({ accountId })
+      toast.success('Import Complete', {
+        description: `Found ${imported} new transaction${imported !== 1 ? 's' : ''}`,
+      })
+    } catch (error) {
+      console.error(error)
+      toast.error('Error importing schwab transactions.', {
+        description: getErrorMessage(error),
+      })
+    }
+  }
+
   return (
-    <div>
-      <Txt.h3>Transactions</Txt.h3>
-      <Txt.muted>Count: {transactions.length}</Txt.muted>
-      <pre>{JSON.stringify(transactions, null, 2)}</pre>
+    <div className="flex flex-col gap-y-4">
+      <div className="flex items-center justify-between">
+        <Txt.h3>Transactions</Txt.h3>
+        <Button onClick={importTransactions} disabled={isImporting}>
+          Sync Transactions
+        </Button>
+      </div>
+      <Select
+        onValueChange={setAccountId}
+        defaultValue={accounts.find((a) => a.is_default)?.id}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Select an account" />
+        </SelectTrigger>
+        <SelectContent>
+          {accounts?.map((a) => (
+            <SelectItem key={a.id} value={a.id}>
+              {a.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Txt.muted>Count: {transactions?.length || 0}</Txt.muted>
+      <DataTable data={transactions} columns={transactionColumns} />
     </div>
   )
 }

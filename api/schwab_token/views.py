@@ -83,7 +83,7 @@ class SchwabCallbackView(APIView):
             # Redirect to frontend success page
             # from django.shortcuts import redirect
 
-            # return redirect("http://localhost:5173/schwab/suc3_alter_schwabtoken_refresh_token_expires_atcess")
+            # TODO: Redirect to frontend success page
             return Response()
 
         except Exception as e:

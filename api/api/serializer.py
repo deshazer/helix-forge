@@ -61,7 +61,7 @@ class GetUserSerializer(serializers.ModelSerializer):
         )
 
     def get_has_schwab_token(self, obj):
-        return bool(obj.schwab_token)
+        return hasattr(obj, "schwab_token") and bool(obj.schwab_token)
 
     def get_refresh_token_expires_at(self, obj):
         if hasattr(obj, "schwab_token") and obj.schwab_token:

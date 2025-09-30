@@ -32,6 +32,7 @@ code {
   --accent-foreground: oklch(0.3729 0.0306 259.7328);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.71 0.16 139);
   --border: oklch(0.8687 0.0043 56.366);
   --input: oklch(0.8687 0.0043 56.366);
   --ring: oklch(0.5854 0.2041 277.1173);
@@ -96,6 +97,8 @@ code {
   --muted-foreground: oklch(0.7137 0.0192 261.3246);
   --accent: oklch(0.3896 0.0074 59.4734);
   --accent-foreground: oklch(0.8717 0.0093 258.3382);
+  --success: oklch(0.71 0.16 139);
+  --success-foreground: oklch(0.2244 0.0074 67.437);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --destructive-foreground: oklch(0.2244 0.0074 67.437);
   --border: oklch(0.3359 0.0077 59.4197);

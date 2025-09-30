@@ -52,7 +52,8 @@ function AccountsComponent() {
       </Txt.muted>
       {lastImported.isValid() && (
         <Txt.muted>
-          Last sync: {lastImported.format('MMM D [@] h:mm A')}
+          Last sync: {lastImported.format('ddd, MMM D [@] h:mm A')} (
+          {lastImported.fromNow()})
         </Txt.muted>
       )}
       <DataTable columns={accountColumns} data={accounts} />

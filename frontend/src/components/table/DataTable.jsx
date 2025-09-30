@@ -27,7 +27,7 @@ const DataTable = ({
     data,
     columns,
     initialState: {
-      pagination: { pageSize: pagination ? 20 : data?.length || 1000 },
+      pagination: { pageSize: pagination ? 50 : data?.length || 1000 },
       columnVisibility: {},
     },
     getCoreRowModel: getCoreRowModel(),
@@ -36,7 +36,7 @@ const DataTable = ({
   })
 
   return (
-    <div className="rounded-lg border overflow-hidden">
+    <div className="rounded-sm border overflow-auto">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

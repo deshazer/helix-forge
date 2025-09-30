@@ -20,4 +20,5 @@ urlpatterns = [
     path("whoami/", get_auth_user, name="whoami"),
     path("", include("account.urls"), name="accounts"),
     path("schwab/", include("schwab_token.urls"), name="schwab"),
+    path("", include("transaction.urls"), name="transactions"),
 ]

@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/tooltip'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ context }) => {
-    // This will auto-redirect if the user is not logged in via the axios interceptor
-    await context.queryClient.ensureQueryData(authQueries.refreshToken())
+  loader: async ({ context }) => {
+    context.queryClient.ensureQueryData(authQueries.refreshToken())
+    context.queryClient.ensureQueryData(authQueries.user())
   },
   component: AuthenticatedComponent,
 })

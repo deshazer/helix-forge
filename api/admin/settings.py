@@ -58,8 +58,9 @@ INSTALLED_APPS = [
     "custom_user.apps.CustomUserConfig",
     "django_extensions",
     "api",
-    "account",
     "schwab_token",
+    "account",
+    "transaction",
 ]
 
 AUTH_USER_MODEL = "custom_user.User"
