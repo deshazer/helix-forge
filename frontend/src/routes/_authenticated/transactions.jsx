@@ -20,6 +20,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { transactionColumns } from '@/components/table/transaction-columns'
+import XLSX from 'xlsx'
+import { FileDown } from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/transactions')({
   loader: async ({ context }) => {
@@ -55,6 +57,14 @@ function TransactionsComponent() {
     }
   }
 
+  // TODO: Improve this using https://docs.sheetjs.com/docs
+  const exportToExcel = () => {
+    const wb = XLSX.utils.book_new()
+    const ws = XLSX.utils.json_to_sheet(transactions)
+    XLSX.utils.book_append_sheet(wb, ws, 'Transactions')
+    XLSX.writeFile(wb, `transactions-${Date.now()}.xlsx`)
+  }
+
   return (
     <div className="flex flex-col gap-y-4">
       <div className="flex items-center justify-between">
@@ -78,7 +88,14 @@ function TransactionsComponent() {
           ))}
         </SelectContent>
       </Select>
-      <Txt.muted>Count: {transactions?.length || 0}</Txt.muted>
+      <div className="flex items-center justify-between">
+        <Txt.muted>Count: {transactions?.length || 0}</Txt.muted>
+        {transactions?.length > 0 && (
+          <Button variant="outline" onClick={exportToExcel}>
+            <FileDown /> Export to Excel
+          </Button>
+        )}
+      </div>
       <DataTable data={transactions} columns={transactionColumns} />
     </div>
   )
