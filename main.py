@@ -1,47 +1,20 @@
 import json
-import os
 from datetime import datetime, timedelta
 
-import pandas as pd
-from dotenv import load_dotenv
-from schwab.auth import easy_client, httpx
+from utils import get_account_hash, get_client, get_transactions, to_xlsx
 
-# from utils import parse_trade_data
-
-load_dotenv()
-
-print("Creating client...")
-c = easy_client(
-    os.getenv("SCHWAB_API_KEY"),
-    os.getenv("SCHWAB_APP_SECRET"),
-    os.getenv("SCHWAB_CALLBACK_URL"),
-    os.getenv("SCHWAB_TOKEN_PATH"),
-)
-
-print("Getting account number...")
-account_hash = os.getenv("SCHWAB_ACCOUNT_HASH")
-if not account_hash:
-    print("No account hash found in environment variables")
-    acct_req = c.get_account_numbers()
-    assert acct_req.status_code == httpx.codes.OK
-    account_hash = acct_req.json()[0]["hashValue"]
-
-acct_req = c.get_account_numbers()
-print(json.dumps(acct_req.json(), indent=2))
-
-acct_req = c.get_accounts()
-print(json.dumps(acct_req.json(), indent=2))
+c = get_client()
 
 
-print("Getting transactions...")
-# tran_req = c.get_transactions(account_hash)
-# assert tran_req.status_code == httpx.codes.OK
-#
+hist = c.get_price_history_every_day("IWM").json()
+to_xlsx(hist)
+
 # trans = sorted(tran_req.json(), key=lambda x: x["time"])
 #
 # df = pd.DataFrame(trans)
 #
 # new_columns = df.apply(parse_trade_data, axis=1)
+
 # result_df = pd.concat([df, new_columns], axis=1)
 # result_df["expirationDate"] = pd.to_datetime(
 #     result_df["expirationDate"], format="%Y-%m-%dT%H:%M:%S%z"
