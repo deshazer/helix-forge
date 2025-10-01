@@ -2,14 +2,22 @@ import { useAuthState, useLogoutMutation } from '@/lib/auth/auth.query'
 import { Link } from '@tanstack/react-router'
 import {
   ChartNoAxesCombined,
+  ChevronRight,
   Cog,
   DollarSign,
+  History,
   Home,
   Landmark,
   LogOut,
+  NotebookPen,
 } from 'lucide-react'
 import Logo from '../logo/Logo'
 import LogoIcon from '../logo/LogoIcon'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '../ui/collapsible'
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +28,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from '../ui/sidebar'
 
 const AppSidebar = () => {
@@ -69,13 +80,44 @@ const AppSidebar = () => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link to="/reports">
-                    <ChartNoAxesCombined /> Reports
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+
+              {/* REPORTS */}
+              <Collapsible asChild className="group/collapsible" defaultOpen>
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                      <ChartNoAxesCombined /> Reports{' '}
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton asChild>
+                          <Link to="/reports/quotes">
+                            <NotebookPen /> Quotes
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      {/* <SidebarMenuSubItem> */}
+                      {/*   <SidebarMenuSubButton asChild> */}
+                      {/*     <Link to="/reports/price-history"> */}
+                      {/*       <History /> Price History */}
+                      {/*     </Link> */}
+                      {/*   </SidebarMenuSubButton> */}
+                      {/* </SidebarMenuSubItem> */}
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton asChild>
+                          <Link to="/reports/options">
+                            <DollarSign /> Options Premium
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+              {/* END REPORTS */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

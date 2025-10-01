@@ -17,6 +17,7 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("whoami/", get_auth_user, name="whoami"),
     path("", include("account.urls"), name="accounts"),
+    path("", include("quote.urls"), name="quotes"),
     path("schwab/", include("schwab_token.urls"), name="schwab"),
     path("", include("transaction.urls"), name="transactions"),
 ]

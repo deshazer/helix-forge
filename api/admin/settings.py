@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "schwab_token",
     "account",
     "transaction",
+    "quote",
 ]
 
 AUTH_USER_MODEL = "custom_user.User"
