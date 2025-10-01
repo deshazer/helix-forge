@@ -1,12 +1,5 @@
-import Txt from '@/components/ui/typography'
-import {
-  transactionQueries,
-  useTransactions,
-} from '@/lib/transactions/transactions.query'
-import { createFileRoute } from '@tanstack/react-router'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartContainer,
   ChartLegend,
@@ -14,18 +7,17 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
+import Txt from '@/components/ui/typography'
 import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-} from 'recharts'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+  transactionQueries,
+  useTransactions,
+} from '@/lib/transactions/transactions.query'
 import { cn, formatCurrency } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
+import { createFileRoute } from '@tanstack/react-router'
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+import utc from 'dayjs/plugin/utc'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -80,6 +72,13 @@ function OptionsPremiumComponent() {
     0,
   )
 
+  const totalFees = optionsTransactions.reduce(
+    (acc, curr) => acc + curr.total_fees,
+    0,
+  )
+
+  const totalGross = totalReturn - totalFees
+
   return (
     <div className="flex flex-col space-y-4">
       <div>
@@ -129,20 +128,17 @@ function OptionsPremiumComponent() {
                   content={
                     <ChartTooltipContent
                       labelFormatter={(label) => dayjs(label).format('M/D')}
-                      formatter={(value, name, ...props) => {
-                        // console.log(value, name, props)
-                        return (
-                          <div className="inline-flex items-center justify-between w-full">
-                            <div className="[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3">
-                              <div className="h-2 w-2 shrink-0 rounded-[2px] bg-chart-3"></div>
-                              Net
-                            </div>
-                            <div className="font-medium">
-                              {formatCurrency(value)}
-                            </div>
+                      formatter={(value) => (
+                        <div className="inline-flex items-center justify-between w-full">
+                          <div className="[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3">
+                            <div className="h-2 w-2 shrink-0 rounded-[2px] bg-chart-3"></div>
+                            Net
                           </div>
-                        )
-                      }}
+                          <div className="font-medium">
+                            {formatCurrency(value)}
+                          </div>
+                        </div>
+                      )}
                     />
                   }
                 />
@@ -156,16 +152,41 @@ function OptionsPremiumComponent() {
               </AreaChart>
             </ChartContainer>
 
-            <div className="mt-4">
-              <Txt.muted>Total Return:</Txt.muted>{' '}
-              <Badge
-                className={cn(
-                  'text-sm',
-                  totalReturn > 0 ? 'bg-green-500' : 'bg-red-500 text-white',
-                )}
-              >
-                {formatCurrency(totalReturn)}
-              </Badge>
+            <div className="mt-4 grid grid-cols-2 gap-y-4 max-w-[250px]">
+              <div className="col-span-1">
+                <Txt.muted>Gross:</Txt.muted>{' '}
+              </div>
+              <div className="col-span-1">
+                <Badge
+                  className={cn(
+                    'text-sm',
+                    totalGross > 0 ? 'bg-green-500' : 'bg-red-500 text-white',
+                  )}
+                >
+                  {formatCurrency(totalGross)}
+                </Badge>
+              </div>
+              <div className="col-span-1">
+                <Txt.muted>Fees:</Txt.muted>{' '}
+              </div>
+              <div className="col-span-1">
+                <Badge className="text-sm bg-red-500 text-white">
+                  {formatCurrency(totalFees)}
+                </Badge>
+              </div>
+              <div className="col-span-1">
+                <Txt.muted className="text-md">Total Return:</Txt.muted>{' '}
+              </div>
+              <div className="col-span-1 -ml-1">
+                <Badge
+                  className={cn(
+                    'text-md',
+                    totalReturn > 0 ? 'bg-green-500' : 'bg-red-500 text-white',
+                  )}
+                >
+                  {formatCurrency(totalReturn)}
+                </Badge>
+              </div>
             </div>
           </CardContent>
         </Card>
