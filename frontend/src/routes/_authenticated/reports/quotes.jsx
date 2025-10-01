@@ -8,6 +8,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import ExportToExcelButton from '@/components/form/ExportToExcelButton'
+import StockDisplay from '@/components/StockDisplay'
 
 export const Route = createFileRoute('/_authenticated/reports/quotes')({
   component: QuotesComponent,
@@ -30,6 +31,11 @@ function QuotesComponent() {
       )
       setResults(response)
       console.log(response)
+      if (response?.quote?.errors) {
+        toast.error('Error fetching quotes', {
+          description: response.quote.errors[0]?.title,
+        })
+      }
     } catch (error) {
       console.error(error)
       toast.error('Error fetching quotes', {
@@ -57,14 +63,13 @@ function QuotesComponent() {
         <Button disabled={!search || isPending}>Go</Button>
       </form>
 
+      <StockDisplay data={results} symbol={search.toUpperCase()} />
+
       {!!results && (
         <div>
-          <ExportToExcelButton data={results?.price_history?.candles} />
-          <pre>
-            <Txt.inlineCode>
-              {JSON.stringify(results?.quote, null, 2)}
-            </Txt.inlineCode>
-          </pre>
+          <ExportToExcelButton data={results?.price_history?.candles}>
+            Export Price History
+          </ExportToExcelButton>
         </div>
       )}
     </div>

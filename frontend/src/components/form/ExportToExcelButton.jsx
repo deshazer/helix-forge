@@ -5,6 +5,7 @@ import { Button } from '../ui/button'
 const ExportToExcelButton = ({
   children,
   className,
+  icon = true,
   data = [],
   filename = '',
   ...props
@@ -21,11 +22,8 @@ const ExportToExcelButton = ({
       }}
       {...props}
     >
-      {children ?? (
-        <>
-          <FileDown /> Export to Excel
-        </>
-      )}
+      {icon && <FileDown />}
+      {children ?? 'Export to Excel'}
     </Button>
   )
 }
