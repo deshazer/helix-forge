@@ -69,12 +69,12 @@ export const transactionColumns = [
       <DataTableColumnHeader
         column={column}
         title="Quantity"
-        className="-mr-2"
+        className="justify-center"
       />
     ),
     enableSorting: true,
     cell: ({ row }) => (
-      <div className="text-center">{Math.abs(row.original.quantity)} </div>
+      <div className="text-right">{Math.abs(row.original.quantity)} </div>
     ),
   },
   {
