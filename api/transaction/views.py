@@ -70,7 +70,6 @@ def import_transactions(request):
             transfer_items = glom(transaction, "transferItems", default=[])
             final_item = transfer_items[-1] or {}
             final_instrument = final_item.get("instrument", {})
-            opt_deliverables = final_instrument.get("optionDeliverables", [])
 
             _, created = Transaction.objects.update_or_create(
                 activity_id=transaction["activityId"],
@@ -116,8 +115,8 @@ def import_transactions(request):
             if created:
                 num_created += 1
 
-            request.user.transaction_sync_at = timezone.now()
-            request.user.save()
+        request.user.transaction_sync_at = timezone.now()
+        request.user.save()
         return Response(
             {"success": True, "transactions": transactions, "imported": num_created}
         )
