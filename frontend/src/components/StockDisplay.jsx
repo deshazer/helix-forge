@@ -39,7 +39,7 @@ const StockDisplay = ({ data }) => {
   const chartColor = isPositive ? '#10b981' : '#ef4444'
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl">
       <CardContent className="p-6">
         {/* Header Section */}
         <div className="flex justify-between items-start mb-6">
