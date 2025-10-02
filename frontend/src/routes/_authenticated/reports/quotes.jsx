@@ -1,49 +1,74 @@
-import SearchInput from '@/components/form/SearchInput'
-import { Button } from '@/components/ui/button'
-import Txt from '@/components/ui/typography'
-import { quoteQueries } from '@/lib/quotes/quotes.query'
-import { getErrorMessage } from '@/lib/utils'
-import { useQueryClient } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { toast } from 'sonner'
 import ExportToExcelButton from '@/components/form/ExportToExcelButton'
+import SearchInput from '@/components/form/SearchInput'
 import StockDisplay from '@/components/StockDisplay'
+import { Button } from '@/components/ui/button'
+import LoadingSpinner from '@/components/ui/loading-spinner'
+import Txt from '@/components/ui/typography'
+import useToastQueryError from '@/hooks/useToastQueryError'
+import { quoteQueries } from '@/lib/quotes/quotes.query'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone.js'
+import utc from 'dayjs/plugin/utc.js'
+import { useState } from 'react'
+import z from 'zod'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export const Route = createFileRoute('/_authenticated/reports/quotes')({
+  validateSearch: z.object({ symbol: z.string().optional() }),
+  loaderDeps: ({ search: { symbol } }) => ({ symbol }),
+  loader: async ({ context, deps: { symbol } }) => {
+    if (symbol) {
+      await context.queryClient.ensureQueryData(
+        quoteQueries.quote(symbol, {
+          price_history: '5m',
+          start_datetime: dayjs()
+            .subtract(1, 'day')
+            .startOf('day')
+            .toISOString(),
+          end_datetime: dayjs().endOf('day').toISOString(),
+        }),
+      )
+    }
+  },
   component: QuotesComponent,
 })
 
 function QuotesComponent() {
-  const [search, setSearch] = useState('')
+  const navigate = useNavigate({ from: Route.fullPath })
+  const { symbol } = Route.useSearch()
+  const [search, setSearch] = useState(symbol || '')
   const [results, setResults] = useState(null)
-  const [isPending, setIsPending] = useState(false)
-  const queryClient = useQueryClient()
+  const {
+    data: quote,
+    refetch,
+    error,
+    isFetching,
+  } = useQuery({
+    ...quoteQueries.quote(symbol, {
+      price_history: '5m',
+      start_datetime: dayjs().subtract(1, 'day').startOf('day').toISOString(),
+      end_datetime: dayjs().endOf('day').toISOString(),
+    }),
+    enabled: Boolean(symbol),
+  })
+
+  quote && console.log('results', quote)
+
+  useToastQueryError(error, 'Error getting quote')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     e.stopPropagation()
 
-    try {
-      setIsPending(true)
-      const response = await queryClient.fetchQuery(
-        quoteQueries.quote(search, { price_history: '1D' }),
-      )
-      setResults(response)
-      console.log(response)
-      if (response?.quote?.errors) {
-        toast.error('Error fetching quotes', {
-          description: response.quote.errors[0]?.title,
-        })
-      }
-    } catch (error) {
-      console.error(error)
-      toast.error('Error fetching quotes', {
-        description: getErrorMessage(error),
-      })
-    } finally {
-      setIsPending(false)
+    if (search && search !== symbol) {
+      return navigate({ search: { symbol: search } })
     }
+
+    refetch()
   }
 
   return (
@@ -55,17 +80,19 @@ function QuotesComponent() {
       >
         <SearchInput
           value={search}
-          setValue={setSearch}
+          setValue={(s) => setSearch(s?.toUpperCase())}
           className="max-w-md"
           placeholder="Enter symbol"
           autoFocus
         />
-        <Button disabled={!search || isPending}>Go</Button>
+        <Button disabled={!search || isFetching}>
+          {isFetching ? <LoadingSpinner /> : 'Go'}
+        </Button>
       </form>
 
-      <StockDisplay data={results} symbol={search.toUpperCase()} />
+      <StockDisplay data={quote} symbol={search.toUpperCase()} />
 
-      {!!results && (
+      {!!quote && (
         <div>
           <ExportToExcelButton data={results?.price_history?.candles}>
             Export Price History

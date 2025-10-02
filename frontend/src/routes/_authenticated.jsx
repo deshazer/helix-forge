@@ -13,8 +13,10 @@ import {
 } from '@/components/ui/tooltip'
 
 export const Route = createFileRoute('/_authenticated')({
-  loader: async ({ context }) => {
+  beforeLoad: ({ context }) => {
     context.queryClient.ensureQueryData(authQueries.refreshToken())
+  },
+  loader: async ({ context }) => {
     context.queryClient.ensureQueryData(authQueries.user())
   },
   component: AuthenticatedComponent,
@@ -28,7 +30,7 @@ function AuthenticatedComponent() {
       <SidebarInset>
         <Tooltip>
           <TooltipTrigger asChild>
-            <SidebarTrigger className="-ml-0  -mt-0 z-50" />
+            <SidebarTrigger className="z-50" />
           </TooltipTrigger>
           <TooltipContent>Toggle Sidebar (Ctrl+B)</TooltipContent>
         </Tooltip>
