@@ -41,7 +41,7 @@ const topLinks = [
     label: 'Reports',
     to: [
       { to: '/reports/quotes', label: 'Quotes', icon: NotebookPen },
-      { to: '/reports/options', label: 'Options', icon: ChartNoAxesCombined },
+      { to: '/reports/profit', label: 'Profit', icon: ChartNoAxesCombined },
     ],
   },
 ]
