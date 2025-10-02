@@ -97,7 +97,7 @@ function TransactionsComponent() {
       <Txt.muted>
         Last synced: <RelativeDate date={user?.transaction_sync_at} />
       </Txt.muted>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-4">
         <Txt.muted>Count: {transactions?.length || 0}</Txt.muted>
         {transactions?.length > 0 && (
           <Button variant="outline" onClick={exportToExcel}>
