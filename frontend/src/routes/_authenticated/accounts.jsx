@@ -60,7 +60,7 @@ function AccountsComponent() {
         To make changes, update your Schwab account then re-sync.
       </Txt.muted>
       <Txt.muted>
-        Last synced: <RelativeDate date={user?.transaction_sync_at} />
+        Last synced: <RelativeDate date={user?.account_sync_at} />
       </Txt.muted>
       <DataTable columns={accountColumns} data={accounts} />
     </div>
