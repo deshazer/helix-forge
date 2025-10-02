@@ -62,7 +62,7 @@ function OptionsPremiumComponent() {
   })
 
   const formattedOptionsData = Object.values(dailySum).map((d) => {
-    return { ...d, day: dayjs(d.day).format('M/D') }
+    return { ...d }
   })
 
   console.log('formattedOptionsData', formattedOptionsData)
@@ -77,6 +77,8 @@ function OptionsPremiumComponent() {
     0,
   )
 
+  const averageDailyReturn = totalReturn / formattedOptionsData.length
+
   const totalGross = totalReturn - totalFees
 
   return (
@@ -89,7 +91,7 @@ function OptionsPremiumComponent() {
           <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
             <CardTitle>Daily Net Premium </CardTitle>
           </CardHeader>
-          <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+          <CardContent className="flex-col px-2 pt-4 sm:px-6 sm:pt-6 space-y-6">
             <ChartContainer
               config={chartConfig}
               className="w-full min-h-[250px]"
@@ -123,11 +125,12 @@ function OptionsPremiumComponent() {
                   axisLine={false}
                   tickMargin={8}
                   minTickGap={32}
+                  tickFormatter={(value) => dayjs(value).format('M/D')}
                 />
                 <ChartTooltip
                   content={
                     <ChartTooltipContent
-                      labelFormatter={(label) => dayjs(label).format('M/D')}
+                      labelFormatter={(label) => dayjs(label).format('ddd M/D')}
                       formatter={(value) => (
                         <div className="inline-flex items-center justify-between w-full">
                           <div className="[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3">
@@ -152,40 +155,67 @@ function OptionsPremiumComponent() {
               </AreaChart>
             </ChartContainer>
 
-            <div className="mt-4 grid grid-cols-2 gap-y-4 max-w-[250px]">
-              <div className="col-span-1">
-                <Txt.muted>Gross:</Txt.muted>{' '}
+            <div className="flex items-center justify-between">
+              <div className="flex-col space-y-2">
+                <div>
+                  <Txt.muted>Average Daily Return:</Txt.muted>{' '}
+                </div>
+                <div>
+                  <Badge
+                    className={cn(
+                      'text-sm',
+                      averageDailyReturn > 0
+                        ? 'bg-green-500'
+                        : 'bg-red-500 text-white',
+                    )}
+                  >
+                    {formatCurrency(averageDailyReturn)}
+                  </Badge>
+                </div>
               </div>
-              <div className="col-span-1">
-                <Badge
-                  className={cn(
-                    'text-sm',
-                    totalGross > 0 ? 'bg-green-500' : 'bg-red-500 text-white',
-                  )}
-                >
-                  {formatCurrency(totalGross)}
-                </Badge>
+              <div className="flex-col space-y-2">
+                <div>
+                  <Txt.muted>Gross:</Txt.muted>{' '}
+                </div>
+                <div>
+                  <Badge
+                    className={cn(
+                      'text-sm',
+                      totalGross > 0 ? 'bg-green-500' : 'bg-red-500 text-white',
+                    )}
+                  >
+                    {formatCurrency(totalGross)}
+                  </Badge>
+                </div>
               </div>
-              <div className="col-span-1">
-                <Txt.muted>Fees:</Txt.muted>{' '}
+              <div className="flex-col space-y-2">
+                <div>
+                  <Txt.muted>Fees:</Txt.muted>{' '}
+                </div>
+                <div>
+                  <Badge className="text-sm bg-red-500 text-white">
+                    {formatCurrency(totalFees)}
+                  </Badge>
+                </div>
               </div>
-              <div className="col-span-1">
-                <Badge className="text-sm bg-red-500 text-white">
-                  {formatCurrency(totalFees)}
-                </Badge>
-              </div>
-              <div className="col-span-1">
-                <Txt.muted className="text-md">Total Return:</Txt.muted>{' '}
-              </div>
-              <div className="col-span-1 -ml-1">
-                <Badge
-                  className={cn(
-                    'text-md',
-                    totalReturn > 0 ? 'bg-green-500' : 'bg-red-500 text-white',
-                  )}
-                >
-                  {formatCurrency(totalReturn)}
-                </Badge>
+            </div>
+            <div className="flex items-center justify-between w-full">
+              <div className="flex-col space-y-2">
+                <div>
+                  <Txt.muted className="text-md">Total Return:</Txt.muted>{' '}
+                </div>
+                <div>
+                  <Badge
+                    className={cn(
+                      'text-md',
+                      totalReturn > 0
+                        ? 'bg-green-500'
+                        : 'bg-red-500 text-white',
+                    )}
+                  >
+                    {formatCurrency(totalReturn)}
+                  </Badge>
+                </div>
               </div>
             </div>
           </CardContent>
