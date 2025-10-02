@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+import ExportToExcelButton from '@/components/form/ExportToExcelButton'
 import { transactionColumns } from '@/components/table/transaction-columns'
 import Txt from '@/components/ui/typography'
 import { accountQueries, useAccounts } from '@/lib/accounts/accounts.query'
@@ -20,10 +21,9 @@ import {
 } from '@/lib/transactions/transactions.query'
 import { getErrorMessage } from '@/lib/utils'
 import { createFileRoute } from '@tanstack/react-router'
-import { FileDown, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import XLSX from 'xlsx'
 
 export const Route = createFileRoute('/_authenticated/transactions')({
   loader: async ({ context }) => {
@@ -63,14 +63,6 @@ function TransactionsComponent() {
     }
   }
 
-  // TODO: Improve this using https://docs.sheetjs.com/docs
-  const exportToExcel = () => {
-    const wb = XLSX.utils.book_new()
-    const ws = XLSX.utils.json_to_sheet(transactions)
-    XLSX.utils.book_append_sheet(wb, ws, 'Transactions')
-    XLSX.writeFile(wb, `transactions-${Date.now()}.xlsx`)
-  }
-
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between mb-4">
@@ -100,9 +92,7 @@ function TransactionsComponent() {
       <div className="flex items-center justify-between mt-4">
         <Txt.muted>Count: {transactions?.length || 0}</Txt.muted>
         {transactions?.length > 0 && (
-          <Button variant="outline" onClick={exportToExcel}>
-            <FileDown /> Export to Excel
-          </Button>
+          <ExportToExcelButton data={transactions} />
         )}
       </div>
       <DataTable data={transactions} columns={transactionColumns} />

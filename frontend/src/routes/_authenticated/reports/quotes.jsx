@@ -94,7 +94,7 @@ function QuotesComponent() {
 
       {!!quote && (
         <div>
-          <ExportToExcelButton data={results?.price_history?.candles}>
+          <ExportToExcelButton data={quote?.price_history?.candles}>
             Export Price History
           </ExportToExcelButton>
         </div>
