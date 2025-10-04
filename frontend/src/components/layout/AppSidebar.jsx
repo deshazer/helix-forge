@@ -110,7 +110,7 @@ const AppSidebar = () => {
           <SidebarMenuItem>
             <Link to="/home">
               <Logo className="max-w-[calc(var(--sidebar-width)-3rem)] group-data-[state=collapsed]:hidden" />
-              <LogoIcon className="w-8 group-data-[state=expanded]:hidden" />
+              <LogoIcon className="w-8 hidden group-data-[state=collapsed]:inline" />
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem className="group-data-[state=collapsed]:hidden">
