@@ -24,6 +24,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { RefreshCw } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
 
 export const Route = createFileRoute('/_authenticated/transactions')({
   loader: async ({ context }) => {
@@ -39,9 +41,14 @@ function TransactionsComponent() {
   const { data: accounts } = useAccounts()
   const { data: user } = useAuthState()
 
+  const [showJournals, setShowJournals] = useState(false)
   const [accountId, setAccountId] = useState(
     accounts.find((a) => a.is_default)?.id,
   )
+
+  const filteredTransactions = showJournals
+    ? transactions
+    : transactions.filter((t) => t.type !== 'JOURNAL')
 
   const { mutateAsync: importSchwabTransactions, isPending: isImporting } =
     useImportSchwabTransactionsMutation()
@@ -89,13 +96,21 @@ function TransactionsComponent() {
       <Txt.muted>
         Last synced: <RelativeDate date={user?.transaction_sync_at} />
       </Txt.muted>
-      <div className="flex items-center justify-between mt-4">
-        <Txt.muted>Count: {transactions?.length || 0}</Txt.muted>
+      <div className="flex items-center gap-x-3 mt-4">
+        <Checkbox
+          id="show-journals"
+          checked={showJournals}
+          onCheckedChange={setShowJournals}
+        />
+        <Label htmlFor="show-journals">Show Journals</Label>
+      </div>
+      <div className="flex items-center justify-between ">
+        <Txt.muted>Count: {filteredTransactions?.length || 0}</Txt.muted>
         {transactions?.length > 0 && (
           <ExportToExcelButton data={transactions} />
         )}
       </div>
-      <DataTable data={transactions} columns={transactionColumns} />
+      <DataTable data={filteredTransactions} columns={transactionColumns} />
     </div>
   )
 }

@@ -21,11 +21,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return (
-            self.queryset.filter(user_id=self.request.user.id)
-            .exclude(type="JOURNAL")
-            .order_by("-time")
-        )
+        return self.queryset.filter(user_id=self.request.user.id).order_by("-time")
 
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user.id)
@@ -36,6 +32,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
 @permission_classes([IsAuthenticated])
 def import_transactions(request):
     try:
+        return Response({"success": False}, status=401)
 
         body = json.loads(request.body)
         account_id = body.get("accountId")
