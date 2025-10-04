@@ -1,5 +1,3 @@
-import { authQueries, useRefreshToken } from '@/lib/auth/auth.query'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
 import AppSidebar from '@/components/layout/AppSidebar'
 import {
   SidebarInset,
@@ -11,11 +9,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import { authQueries } from '@/lib/auth/auth.query'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: ({ context }) => {
-    context.queryClient.ensureQueryData(authQueries.refreshToken())
-  },
   loader: async ({ context }) => {
     context.queryClient.ensureQueryData(authQueries.user())
   },
@@ -23,7 +20,6 @@ export const Route = createFileRoute('/_authenticated')({
 })
 
 function AuthenticatedComponent() {
-  useRefreshToken()
   return (
     <SidebarProvider>
       <AppSidebar />

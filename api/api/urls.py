@@ -10,7 +10,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path("token/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("login/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("token/refresh/", CustomRefreshTokenView.as_view(), name="token_refresh"),
     path("logout/", logout, name="logout"),
     path("authenticated/", is_authenticated, name="is_authenticated"),

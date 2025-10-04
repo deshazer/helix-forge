@@ -9,7 +9,6 @@ import {
   useImportSchwabAccountsMutation,
 } from '@/lib/accounts/accounts.query'
 import { authQueries, useAuthState } from '@/lib/auth/auth.query'
-import { transactionQueries } from '@/lib/transactions/transactions.query'
 import { getErrorMessage } from '@/lib/utils'
 import { createFileRoute } from '@tanstack/react-router'
 import { RefreshCw } from 'lucide-react'
@@ -20,7 +19,6 @@ export const Route = createFileRoute('/_authenticated/accounts')({
   loader: async ({ context }) => {
     context.queryClient.ensureQueryData(accountQueries.index())
     context.queryClient.ensureQueryData(authQueries.user())
-    context.queryClient.ensureQueryData(transactionQueries.index())
   },
 })
 
