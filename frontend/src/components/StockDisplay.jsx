@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/utils'
+import currency from 'currency.js'
 import dayjs from 'dayjs'
 import {
   CartesianGrid,
@@ -32,11 +33,11 @@ const StockDisplay = ({ data }) => {
   const formattedPriceHistory = priceHistory
     ?.filter((candle) => dayjs(candle.datetime))
     ?.map((candle) => ({
-      time: dayjs(candle.datetime).format('h:mm A'),
+      time: dayjs(candle.datetime).format('M/D/YY h:mm A'),
       price: candle.close,
     }))
 
-  // console.log('formattedPriceHistory', formattedPriceHistory)
+  console.log('formattedPriceHistory', formattedPriceHistory)
 
   return (
     <Card className="w-full max-w-4xl">
@@ -165,7 +166,9 @@ const StockDisplay = ({ data }) => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
               <p className="text-gray-600">EPS</p>
-              <p className="font-medium">${stock.fundamental.eps.toFixed(2)}</p>
+              <p className="font-medium">
+                {currency(stock.fundamental.eps).format()}
+              </p>
             </div>
             <div>
               <p className="text-gray-600">Dividend Yield</p>
