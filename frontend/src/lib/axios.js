@@ -1,5 +1,5 @@
-import { redirect } from '@tanstack/react-router'
 import Axios from 'axios'
+import { csrf } from './auth/auth.api'
 
 const api = Axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -9,7 +9,8 @@ const api = Axios.create({
     Accept: 'application/json',
   },
   withCredentials: true,
-  withXSRFToken: true,
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFToken',
 })
 
 let isRefreshing = false
@@ -76,19 +77,22 @@ export const detectLoggedOutResponse = async (error) => {
 
   // If not a 401, pass through.
   if (!error.response || error.response.status !== 401) {
+    if (error?.response?.status === 419) {
+      await csrf()
+    }
     return Promise.reject(error)
   }
 
   // If the 401 came from the refresh call itself → redirect to login immediately.
   if (originalRequest._isRefresh) {
-    redirectToLogin('refresh-unauthorized')
+    redirectToLogin()
     // Reject after triggering redirect. The page will navigate away.
     return Promise.reject(error)
   }
 
   // Prevent infinite loops.
   if (originalRequest._retry) {
-    redirectToLogin('retry-unauthorized')
+    redirectToLogin()
     return Promise.reject(error)
   }
   originalRequest._retry = true
@@ -104,7 +108,7 @@ export const detectLoggedOutResponse = async (error) => {
       .catch((refreshErr) => {
         isRefreshing = false
         // Trigger redirect BEFORE rejecting the queue so navigation wins the race.
-        redirectToLogin('refresh-failed')
+        redirectToLogin()
         flushQueue(refreshErr)
       })
   }
@@ -125,28 +129,6 @@ export const detectLoggedOutResponse = async (error) => {
       reject(error)
     }
   })
-
-  // if (
-  //   error.response &&
-  //   (error.response.status === 401 || error.response.status === 419)
-  // ) {
-  //   toast.error('Session expired. Please log in again.')
-  //
-  //   console.log('session expired, sending you to login page', new Date())
-  //
-  //   if (error.config?.beforeLoad) {
-  //     throw redirect({
-  //       to: '/login',
-  //       search: { redirect: window.location.pathname },
-  //     })
-  //   } else {
-  //     const forwardTo = new URL(window.location.origin)
-  //     forwardTo.searchParams.set('redirect', window.location.pathname)
-  //     forwardTo.pathname = '/login'
-  //     window.history.pushState(null, '', forwardTo)
-  //   }
-  // }
-  // return Promise.reject(error)
 }
 
 export default api

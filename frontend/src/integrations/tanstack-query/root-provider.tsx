@@ -1,3 +1,4 @@
+import { csrf } from '@/lib/auth/auth.api'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export function getContext() {
@@ -19,6 +20,11 @@ export function getContext() {
           const status = error?.response?.status
           if (status === 401) {
             return false // let the axios interceptor handle this
+          }
+          if (status === 403) {
+            csrf()
+              .then(() => failureCount < 2)
+              .catch(() => false)
           }
           return failureCount < 1
         },

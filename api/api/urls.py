@@ -4,6 +4,7 @@ from .views import (
     CustomRefreshTokenView,
     CustomTokenObtainPairView,
     get_auth_user,
+    get_csrf_cookie,
     is_authenticated,
     logout,
     register,
@@ -11,6 +12,7 @@ from .views import (
 
 urlpatterns = [
     path("login/", CustomTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("csrf/", get_csrf_cookie, name="get_csrf_cookie"),
     path("token/refresh/", CustomRefreshTokenView.as_view(), name="token_refresh"),
     path("logout/", logout, name="logout"),
     path("authenticated/", is_authenticated, name="is_authenticated"),

@@ -2,12 +2,14 @@ import { getErrorMessage } from '@/lib/utils'
 import {
   queryOptions,
   useMutation,
+  useQuery,
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import {
+  csrf,
   // forgotPassword,
   getAuthUser,
   isAuthenticated,
@@ -19,14 +21,22 @@ const SESSION_DURATION = 1000 * 60 * 30 // 30 minutes
 
 export const authQueryKeys = {
   all: [{ entity: 'auth' }],
+  csrf: () => [{ ...authQueryKeys.all[0], scope: 'csrf' }],
   isAuthenticated: () => [{ ...authQueryKeys.all[0], scope: 'authenticated' }],
   user: () => [{ ...authQueryKeys.all[0], scope: 'user' }],
   refreshToken: (beforeLoad) => [
-    { ...authQueryKeys.all[0], scope: 'cookie', beforeLoad },
+    { ...authQueryKeys.all[0], scope: 'token', beforeLoad },
   ],
 }
 
 export const authQueries = {
+  csrf: () =>
+    queryOptions({
+      queryKey: authQueryKeys.csrf(),
+      queryFn: csrf,
+      staleTime: Infinity,
+      gcTime: Infinity,
+    }),
   user: () =>
     queryOptions({
       queryKey: authQueryKeys.user(),
@@ -56,6 +66,10 @@ export const authQueries = {
 
 export function useAuthState(params = {}) {
   return useSuspenseQuery({ ...authQueries.user(), ...params })
+}
+
+export function useCsrf() {
+  return useQuery(authQueries.csrf())
 }
 
 export function useRefreshToken() {

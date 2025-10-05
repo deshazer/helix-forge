@@ -1,5 +1,7 @@
 import api from '@/lib/axios'
 
+export const csrf = () => api.get('/csrf/')
+
 export const refreshToken = ({ signal }) =>
   api.post('/token/refresh/', { signal })
 export const isAuthenticated = () => api.post('/authenticated/')
@@ -7,10 +9,11 @@ export const isAuthenticated = () => api.post('/authenticated/')
 // code 422 Unprocessable Entity is returned by auth methods that fail backend validation
 // e.g. bad login credentials, signing up with an email already in use, expired password reset token, etc
 export async function login(value) {
+  await csrf()
   return api.post('/login/', value)
 }
 
-export function logout() {
+export async function logout() {
   return api.post('/logout/')
 }
 

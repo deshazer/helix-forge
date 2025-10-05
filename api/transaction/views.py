@@ -32,7 +32,6 @@ class TransactionViewSet(viewsets.ModelViewSet):
 @permission_classes([IsAuthenticated])
 def import_transactions(request):
     try:
-        return Response({"success": False}, status=401)
 
         body = json.loads(request.body)
         account_id = body.get("accountId")

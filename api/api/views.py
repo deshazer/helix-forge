@@ -1,3 +1,6 @@
+from django.middleware.csrf import get_token
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -7,6 +10,7 @@ from .serializer import GetUserSerializer, UserRegistrationSerializer
 
 
 # Create your views here.
+@method_decorator(csrf_protect, name="dispatch")
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         try:
@@ -45,6 +49,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return Response({"success": False, "error": str(e)}, status=400)
 
 
+@method_decorator(csrf_protect, name="dispatch")
 class CustomRefreshTokenView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         try:
@@ -79,6 +84,14 @@ class CustomRefreshTokenView(TokenRefreshView):
             return Response({"success": False, "error": str(e)}, status=401)
 
 
+@ensure_csrf_cookie
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_csrf_cookie(request):
+    get_token(request)
+    return Response({"success": True})
+
+
 @api_view(["POST"])
 def logout(request):
     try:
@@ -97,6 +110,7 @@ def is_authenticated(request):
     return Response({"success": True})
 
 
+@csrf_protect
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register(request):
