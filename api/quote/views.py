@@ -1,7 +1,6 @@
 from django.utils.dateparse import parse_datetime
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from schwab_token.services import create_schwab_client
 
@@ -49,7 +48,10 @@ def fetch_price_history(request, symbol):
     history = []
     if fetch_history:
         history = fetch_history(
-            symbol, start_datetime=start_datetime, end_datetime=end_datetime
+            symbol,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+            need_extended_hours_data=True,
         ).json()
 
     return history
@@ -59,7 +61,6 @@ def fetch_price_history(request, symbol):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
 def get_quote(request, symbol):
 
     try:
@@ -92,7 +93,6 @@ def get_quote(request, symbol):
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
 def get_price_history(request, symbol):
 
     try:

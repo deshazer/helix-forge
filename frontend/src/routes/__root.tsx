@@ -12,6 +12,7 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
+import { useCsrf } from '@/lib/auth/auth.query'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -34,6 +35,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  useCsrf()
+
   return (
     <html lang="en" className="dark font-sans">
       <head>

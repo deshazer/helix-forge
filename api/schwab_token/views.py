@@ -1,6 +1,5 @@
 import base64
 import datetime
-import json
 import urllib.parse
 
 import requests
@@ -8,8 +7,6 @@ from django.conf import settings
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -18,7 +15,6 @@ from .services import create_schwab_client
 
 
 class SchwabAuthInitView(APIView):
-    @permission_classes([IsAuthenticated])
     def get(self, request):
         """Generate Schwab authorization URL"""
         if not request.user.is_authenticated:
@@ -43,7 +39,6 @@ class SchwabAuthInitView(APIView):
 
 class SchwabCallbackView(APIView):
     @csrf_exempt
-    @permission_classes([IsAuthenticated])
     def get(self, request):
         """Handle Schwab OAuth callback"""
         try:
@@ -93,7 +88,6 @@ class SchwabCallbackView(APIView):
 class SchwabAccountsView(APIView):
     """View to get a list of Schwab accounts"""
 
-    @permission_classes([IsAuthenticated])
     def get(self, request):
         if not request.user.is_authenticated:
             return Response(
@@ -127,7 +121,6 @@ class SchwabAccountsView(APIView):
 class SchwabTransactionsView(APIView):
     """View to get a list of Schwab transactions"""
 
-    @permission_classes([IsAuthenticated])
     def get(self, request):
         if not request.user.is_authenticated:
             return Response(

@@ -1,6 +1,6 @@
 from django.utils import timezone
-from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from schwab_token.services import create_schwab_client
 
@@ -13,7 +13,6 @@ from .serializer import AccountSerializer
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user_id=self.request.user.id)
@@ -23,7 +22,6 @@ class AccountViewSet(viewsets.ModelViewSet):
 
 
 @api_view(["POST"])
-@permission_classes([permissions.IsAuthenticated])
 def import_accounts(request):
     try:
         client = create_schwab_client(request.user)

@@ -3,9 +3,8 @@ import json
 from account.models import Account
 from django.utils import timezone
 from glom import glom
-from rest_framework import permissions, status, viewsets
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import status, viewsets
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from schwab_token.services import create_schwab_client
 
@@ -18,7 +17,6 @@ from .serializer import TransactionSerializer
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user_id=self.request.user.id).order_by("-time")
@@ -29,7 +27,6 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
 # Create your views here.
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
 def import_transactions(request):
     try:
 
