@@ -3,9 +3,11 @@ import { getPriceHistory, getQuote } from './quotes.api'
 
 export const quoteQueryKeys = {
   all: () => [{ entity: 'quotes' }],
-  quote: (symbol, filters) => [{ ...quoteQueryKeys.all[0], symbol, filters }],
+  quote: (symbol, filters) => [
+    { ...quoteQueryKeys.all[0], scope: 'quote', symbol, filters },
+  ],
   priceHistory: (symbol, filters) => [
-    { ...quoteQueryKeys.all[0], symbol, filters },
+    { ...quoteQueryKeys.all[0], scope: 'priceHistory', symbol, filters },
   ],
 }
 
