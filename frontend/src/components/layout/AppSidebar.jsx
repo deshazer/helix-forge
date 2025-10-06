@@ -3,6 +3,7 @@ import { Link, useLocation } from '@tanstack/react-router'
 import {
   ChartNoAxesCombined,
   ChevronRight,
+  Clipboard,
   Cog,
   DollarSign,
   Home,
@@ -37,7 +38,7 @@ const topLinks = [
   { to: '/transactions', icon: DollarSign, label: 'Transactions' },
   { to: '/accounts', icon: Landmark, label: 'Accounts' },
   {
-    icon: Landmark,
+    icon: Clipboard,
     label: 'Reports',
     to: [
       { to: '/reports/quotes', label: 'Quotes', icon: NotebookPen },
