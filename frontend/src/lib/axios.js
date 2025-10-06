@@ -77,9 +77,6 @@ export const detectLoggedOutResponse = async (error) => {
 
   // If not a 401, pass through.
   if (!error.response || error.response.status !== 401) {
-    if (error?.response?.status === 419) {
-      await csrf()
-    }
     return Promise.reject(error)
   }
 
