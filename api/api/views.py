@@ -1,7 +1,11 @@
 from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -86,6 +90,7 @@ class CustomRefreshTokenView(TokenRefreshView):
 
 @ensure_csrf_cookie
 @api_view(["GET"])
+@authentication_classes([])
 @permission_classes([AllowAny])
 def get_csrf_cookie(request):
     get_token(request)

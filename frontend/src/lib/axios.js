@@ -26,7 +26,8 @@ export const setAuthFailureRedirect = (fn) => {
 }
 
 function hardRedirectToLogin() {
-  if (authRedirectInProgress) return
+  if (authRedirectInProgress || window.location.pathname.startsWith('/login'))
+    return
   authRedirectInProgress = true
 
   const next = window.location.pathname + window.location.search
